@@ -2,8 +2,9 @@ import UIKit
 
 class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var imageToFloodURL = ""
+    var imageToFloodURL: URL?
     var logArea: UITextView?
+    var controller: TrollController?
 
     func trollLog(_ message: String) {
         logArea?.text = (logArea?.text ?? "") + message + "\n"
@@ -57,11 +58,10 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
 
         let directory = NSTemporaryDirectory()
         let fileName = "image.png"
-        let fullURL = URL(fileURLWithPath: fileName, relativeTo: URL(fileURLWithPath: directory));
-        trollLog("image saved to " + fullURL.absoluteString)
+        imageToFloodURL = URL(fileURLWithPath: fileName, relativeTo: URL(fileURLWithPath: directory));
+        trollLog("image saved to " + imageToFloodURL!.absoluteString)
 
-        try! UIImagePNGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage)!.write(to: fullURL)
-        imageToFloodURL = fullURL.absoluteString
+        try! UIImagePNGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage)!.write(to: imageToFloodURL!)
     }
 
     @objc func choose(fromURL sender: Any?) {
@@ -79,7 +79,7 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
         alertController.addAction(UIAlertAction(title: "Okay", style: .default, handler: { action in
             let textfields = alertController.textFields
             let imageurl: UITextField = textfields![0]
-            self.imageToFloodURL = imageurl.text!
+            self.imageToFloodURL = URL(string: imageurl.text!)
         }))
         // show the alert
         present(alertController, animated: true)
@@ -87,13 +87,16 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     @objc func startFlooding(_ sender: Any?) {
         // here you should put your objective c code for trolldrop
-        trollLog("start flooding")
-
+        trollLog("started flooding - make sure bluetooth and wifi are on")
+        controller = TrollController(sharedURL: imageToFloodURL!, rechargeDuration: 0, logger: {message in
+            self.trollLog(message)
+        });
+        controller!.start();
     }
 
     @objc func stopFlooding(_ sender: Any?) {
-        trollLog("stop flooding")
-
+        trollLog("stopped flooding")
+        controller?.stop();
     }
 
 }
