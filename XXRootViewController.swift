@@ -12,7 +12,7 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     override func loadView() {
         super.loadView()
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = UIColor.white
         // start creating the buttons
         let librarybutton = UIButton(type: .roundedRect)
         librarybutton.addTarget(self, action: #selector(XXRootViewController.choose(fromLibrary:)), for: .touchUpInside)
@@ -38,9 +38,12 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
         stopfloodbutton.frame = CGRect(x: 20, y: 200, width: view.frame.size.width - 40, height: 40)
         view.addSubview(stopfloodbutton)
 
-        logArea = UITextView(frame: CGRect(x: 20, y: 240, width: view.frame.size.width - 40, height: 100))
+        logArea = UITextView(frame: CGRect(x: 20, y: 240, width: view.frame.size.width - 40, height: 200))
         logArea!.isEditable = false
         logArea!.text = "-trolldropapp log-\nremember to turn on wifi and bluetooth before trolldropping\n"
+        logArea!.layer.borderWidth = 1
+        logArea!.layer.borderColor = UIColor.gray.cgColor
+        logArea!.layer.cornerRadius = 10
         view.addSubview(logArea!)
     }
 
