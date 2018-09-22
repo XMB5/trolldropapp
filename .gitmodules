@@ -1,0 +1,4 @@
+[submodule "trolldrop"]
+	path = trolldrop
+	url = https://github.com/XMB5/trolldrop
+	branch = master
