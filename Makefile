@@ -17,4 +17,4 @@ _THEOS_PLATFORM_DPKG_DEB_COMPRESSION = gzip
 include $(THEOS_MAKE_PATH)/application.mk
 
 after-install::
-	install.exec "killall \"trolldropapp\"" || true
+	install.exec "killall trolldropapp 2>/dev/null && sleep 0.1; /usr/local/bin/launchapp com.shfdev.trolldropapp" || true

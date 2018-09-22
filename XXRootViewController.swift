@@ -2,9 +2,9 @@ import UIKit
 
 class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var imageToFloodURL: URL?
-    var logArea: UITextView?
+    var floodUrl: URL?
     var controller: TrollController?
+    var logArea: UITextView?
 
     func trollLog(_ message: String) {
         logArea?.text = (logArea?.text ?? "") + message + "\n"
@@ -40,7 +40,7 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
 
         logArea = UITextView(frame: CGRect(x: 20, y: 240, width: view.frame.size.width - 40, height: 100))
         logArea!.isEditable = false
-        logArea!.text = "-trolldropapp log-\n"
+        logArea!.text = "-trolldropapp log-\nremember to turn on wifi and bluetooth before trolldropping\n"
         view.addSubview(logArea!)
     }
 
@@ -58,10 +58,11 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
 
         let directory = NSTemporaryDirectory()
         let fileName = "image.png"
-        imageToFloodURL = URL(fileURLWithPath: fileName, relativeTo: URL(fileURLWithPath: directory));
-        trollLog("image saved to " + imageToFloodURL!.absoluteString)
+        floodUrl = URL(fileURLWithPath: fileName, relativeTo: URL(fileURLWithPath: directory))
+        floodUrl = URL(string: floodUrl!.absoluteString)
+        trollLog("image saved to " + floodUrl!.absoluteString)
 
-        try! UIImagePNGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage)!.write(to: imageToFloodURL!)
+        try! UIImagePNGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage)!.write(to: floodUrl!)
     }
 
     @objc func choose(fromURL sender: Any?) {
@@ -78,17 +79,22 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
         }))
         alertController.addAction(UIAlertAction(title: "Okay", style: .default, handler: { action in
             let textfields = alertController.textFields
-            let imageurl: UITextField = textfields![0]
-            self.imageToFloodURL = URL(string: imageurl.text!)
+            guard let urlstr = textfields![0].text else {return}
+            self.floodUrl = URL(string: urlstr)
+            self.trollLog("url set to " + self.floodUrl!.absoluteString)
         }))
         // show the alert
         present(alertController, animated: true)
     }
 
     @objc func startFlooding(_ sender: Any?) {
-        // here you should put your objective c code for trolldrop
-        trollLog("started flooding - make sure bluetooth and wifi are on")
-        controller = TrollController(sharedURL: imageToFloodURL!, rechargeDuration: 0, logger: {message in
+        // here you should put your code for trolldrop
+        guard floodUrl != nil else {
+            trollLog("no url selected");
+            return
+        }
+        trollLog("started flooding")
+        controller = TrollController(sharedURL: floodUrl!, rechargeDuration: 0, logger: {message in
             self.trollLog(message)
         });
         controller!.start();
