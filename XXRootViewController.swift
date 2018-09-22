@@ -61,7 +61,7 @@ class XXRootViewController: UIViewController, UIImagePickerControllerDelegate, U
         trollLog("image saved to " + fullURL.absoluteString)
 
         try! UIImagePNGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage)!.write(to: fullURL)
-        imageToFloodURL = "file:///tmp/floodimage.png"
+        imageToFloodURL = fullURL.absoluteString
     }
 
     @objc func choose(fromURL sender: Any?) {
