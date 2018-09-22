@@ -1,8 +1,8 @@
-Package: com.yourcompany.trolldrop-app
-Name: trolldrop-app
+Package: com.shfdev.trolldropapp
+Name: trolldropapp
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome application!
-Maintainer: System Administrator
-Author: System Administrator
-Section: Utilities
+Description: GUI for trolldrop
+Maintainer: Sam Foxman <samfoxman320@gmail.com>
+Author: Sam Foxman <samfoxman320@gmail.com>
+Section: Fun

@@ -7,6 +7,7 @@ include $(THEOS)/makefiles/common.mk
 APPLICATION_NAME = trolldropapp
 trolldropapp_FILES = main.m XXAppDelegate.m XXRootViewController.m
 trolldropapp_FRAMEWORKS = UIKit CoreGraphics
+trolldropapp_CODESIGN_FLAGS = -Sent.xml
 
 include $(THEOS_MAKE_PATH)/application.mk
 

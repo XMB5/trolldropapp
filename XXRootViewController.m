@@ -1,8 +1,12 @@
 #import "XXRootViewController.h"
-#import <spawn.h>
+
 NSString *imageToFloodURL;
+UITextView *logArea;
 
 @implementation XXRootViewController
+- (void)trollLog:(NSString*)message {
+    logArea.text = [[logArea.text stringByAppendingString: message] stringByAppendingString: @"\n"];
+}
 - (void)loadView
 {
     [super loadView];
@@ -17,13 +21,13 @@ NSString *imageToFloodURL;
     UIButton *urlbutton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [urlbutton addTarget:self action:@selector(chooseFromURL:) forControlEvents:UIControlEventTouchUpInside];
     [urlbutton setTitle:@"Choose from URL" forState:UIControlStateNormal];
-    urlbutton.frame = CGRectMake(20, 140, self.view.frame.size.width - 40, 40);
+    urlbutton.frame = CGRectMake(20, 120, self.view.frame.size.width - 40, 40);
     [self.view addSubview:urlbutton];
     
     UIButton *floodbutton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [floodbutton addTarget:self action:@selector(startFlooding:) forControlEvents:UIControlEventTouchUpInside];
     [floodbutton setTitle:@"Start flooding" forState:UIControlStateNormal];
-    floodbutton.frame = CGRectMake(20, 200, self.view.frame.size.width - 40, 40);
+    floodbutton.frame = CGRectMake(20, 160, self.view.frame.size.width - 40, 40);
     [self.view addSubview:floodbutton];
 
     UIButton *stopfloodbutton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -31,6 +35,11 @@ NSString *imageToFloodURL;
     [stopfloodbutton setTitle:@"Stop flooding" forState:UIControlStateNormal];
     stopfloodbutton.frame = CGRectMake(20, 200, self.view.frame.size.width - 40, 40);
     [self.view addSubview:stopfloodbutton];
+
+    logArea = [[UITextView alloc] initWithFrame: CGRectMake(20, 240, self.view.frame.size.width - 40, 100)];
+    [logArea setEditable: NO];
+    logArea.text = @"-trolldropapp log-\n";
+    [self.view addSubview:logArea];
 }
 -(void)chooseFromLibrary:(id)sender
 {
@@ -46,8 +55,8 @@ NSString *imageToFloodURL;
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     // saves the selected image as /User/Documents/floodimage.png
-    [UIImagePNGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage]) writeToFile:@"/User/Documents/floodimage.png" atomically:YES];
-    imageToFloodURL = @"file:///User/Documents/floodimage.png";
+    [UIImagePNGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage]) writeToFile:@"/tmp/floodimage.png" atomically:YES];
+    imageToFloodURL = @"file:///tmp/floodimage.png";
 }
 -(void)chooseFromURL:(id)sender
 {
@@ -73,22 +82,13 @@ NSString *imageToFloodURL;
 }
 -(void)startFlooding:(id)sender
 {
-    /* here you should put your objective c code for trolldrop
+    // here you should put your objective c code for trolldrop
+    [self trollLog: @"start flooding"];
 
-
-
-
-
-
-
-
-
-
-
-    */
 }
 -(void)stopFlooding:(id)sender
 {
-    // put stuff here to stop flooding
+    [self trollLog: @"stop flooding"];
+
 }
 @end
