@@ -2,10 +2,13 @@ ifeq ($(THEOS),)
 	THEOS = /home/sam/Downloads/Applications/Libraries/theos
 endif
 
+TARGET = ::11.0
+ARCHS = arm64
+
 include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = trolldropapp
-trolldropapp_FILES = main.m XXAppDelegate.m XXRootViewController.m
+trolldropapp_FILES = XXAppDelegate.swift XXRootViewController.swift
 trolldropapp_FRAMEWORKS = UIKit CoreGraphics
 trolldropapp_CODESIGN_FLAGS = -Sent.xml
 
